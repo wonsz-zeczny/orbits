@@ -28,6 +28,8 @@ FetchContent_MakeAvailable(glfw glm spdlog)
 
 add_subdirectory(vendor)
 
+add_subdirectory(src)
+
 add_executable(app main.cpp)
 
-target_link_libraries(app PUBLIC glad glfw glm spdlog) 
+target_link_libraries(app PUBLIC orbits-lib)
