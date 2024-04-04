@@ -17,7 +17,7 @@ static void APIENTRY debugCallback(
 	if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
 
 	spdlog::debug("---------------");
-	spdlog::debug("Debug message ({}): {}\n", id, message);
+	spdlog::debug("Debug message ({}): {}\n", id, message); 
 
     std::string source_str;
     std::string type_str;
@@ -54,7 +54,7 @@ static void APIENTRY debugCallback(
         case GL_DEBUG_SEVERITY_NOTIFICATION: sev_str = "Severity: notification"; break;
 	} 
 
-	spdlog::debug("{}\n {}\n {}\n", source_str, type_str, sev_str);
+	spdlog::debug("{}\n{}\n{}\n", source_str, type_str, sev_str);
 }
 
 int main() {
@@ -66,7 +66,7 @@ int main() {
     glfwInit();
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 
