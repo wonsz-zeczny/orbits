@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/gl.h>
+#include <glm/glm.hpp>
 
 
 class Program {
@@ -12,6 +13,8 @@ class Program {
         void use() const;
 
         unsigned int getProgramID() const;
+
+        void setMatrix4fv(const char* name, const glm::mat4& matrix);
 
     private:
         void printLinkingLogs() const;

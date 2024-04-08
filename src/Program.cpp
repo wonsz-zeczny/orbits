@@ -2,6 +2,8 @@
 
 #include <spdlog/spdlog.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 
 void Program::attachShader(unsigned int shader_id) const {
     glAttachShader(id, shader_id);
@@ -19,6 +21,10 @@ void Program::use() const {
 
 unsigned int Program::getProgramID() const {
     return id;
+}
+
+void Program::setMatrix4fv(const char* name, const glm::mat4& matrix) {
+	glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 void Program::printLinkingLogs() const {

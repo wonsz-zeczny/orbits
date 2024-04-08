@@ -26,11 +26,11 @@ void Sphere::loadDataToGPU() const {
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices_data.size(), vertices_data.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(utils::Vertex) * vertices_data.size(), vertices_data.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(0));
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, normal)));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, tex_coords)));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(utils::Vertex), (GLvoid*)(0));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(utils::Vertex), (GLvoid*)(offsetof(utils::Vertex, normal)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(utils::Vertex), (GLvoid*)(offsetof(utils::Vertex, tex_coords)));
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -54,7 +54,7 @@ void Sphere::calculateVertices(unsigned int stack_count, unsigned int sector_cou
     double sector_angle;
 
     for(auto i{0}; i <= stack_count; ++i) {
-        Vertex v;
+        utils::Vertex v;
 
         stack_angle = (std::numbers::pi / 2) - i * stack_step;
 

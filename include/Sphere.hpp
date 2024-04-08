@@ -16,7 +16,7 @@ class Sphere {
         void clearMemory();
         void loadDataToGPU() const;
 
-        std::vector<Vertex> vertices_data{};
+        std::vector<utils::Vertex> vertices_data{};
         std::vector<unsigned int> indices{};
         std::vector<unsigned int> line_indices{};
 
