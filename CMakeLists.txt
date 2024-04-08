@@ -4,7 +4,13 @@ cmake_minimum_required(VERSION 3.22)
 
 project(orbits)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+if(${MSVC})
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+endif()
 
 FetchContent_Declare(
         glfw
@@ -24,7 +30,7 @@ FetchContent_Declare(
         GIT_TAG 1.0.1
 )
 
-FetchContent_MakeAvailable(glfw glm spdlog)
+FetchContent_MakeAvailable(glfw glm spdlog) 
 
 add_subdirectory(vendor)
 
@@ -32,4 +38,6 @@ add_subdirectory(src)
 
 add_executable(app main.cpp)
 
-target_link_libraries(app PUBLIC orbits-lib)
+target_link_libraries(app PUBLIC orbits-lib) 
+
+target_compile_definitions(app PUBLIC SHADERS_DIR="${CMAKE_SOURCE_DIR}/shaders/")

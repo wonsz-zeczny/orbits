@@ -1,4 +1,7 @@
-#include "Debug.hpp"
+#include "Init.hpp"
+#include "Sphere.hpp"
+#include "Shader.hpp"
+#include "Program.hpp"
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
@@ -47,11 +50,35 @@ int main() {
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEPTH_TEST);
 
-    glDebugMessageCallback(debugMessageCallback, nullptr);
+    glDebugMessageCallback(debugOpenGLMessageCallback, nullptr);
+
+    Program sphere_program;
+
+    {
+        Shader vertex_shader{GL_VERTEX_SHADER};
+        vertex_shader.loadShaderCode(SHADERS_DIR"sphere-vertex.glsl");
+
+        Shader fragment_shader{GL_FRAGMENT_SHADER};
+        fragment_shader.loadShaderCode(SHADERS_DIR"sphere-fragment.glsl");
+
+        vertex_shader.compileShaderCode();
+        fragment_shader.compileShaderCode();
+
+        sphere_program.attachShader(vertex_shader.getShaderID());
+        sphere_program.attachShader(fragment_shader.getShaderID());
+    }
+    
+    sphere_program.link();
+
+    Sphere sphere;
+    sphere.calculateVertices(20, 20, 5.0f);
 
     while(!glfwWindowShouldClose(window)) {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f),
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        sphere_program.use();
+        sphere.draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

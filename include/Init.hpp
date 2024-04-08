@@ -1,8 +1,10 @@
+#pragma once
+
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
 
-void APIENTRY debugMessageCallback(	
+void APIENTRY debugOpenGLMessageCallback(	
     GLenum source,
 	GLenum type,
 	unsigned int id,
