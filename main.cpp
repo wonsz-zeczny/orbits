@@ -2,6 +2,7 @@
 #include "Utils.hpp"
 #include "Camera.hpp"
 #include "Sphere.hpp"
+#include "Sphere2.hpp"
 #include "Shader.hpp"
 #include "Program.hpp"
 
@@ -25,7 +26,7 @@ void processKeyboardInput(GLFWwindow* window) {
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         camera::Camera::processCameraMovement(camera::Direction::Forward, deltatime);
-    }
+    } 
     else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         camera::Camera::processCameraMovement(camera::Direction::Left, deltatime);
     }
@@ -44,6 +45,9 @@ void processMouseMovement(GLFWwindow* window, double x_pos, double y_pos) {
     double x_offset{ x_pos - previous_x_pos};
     double y_offset{ previous_y_pos - y_pos };
 
+    previous_x_pos = x_pos;
+    previous_y_pos = y_pos;
+
     camera::Camera::processCameraRotation(x_offset, y_offset);
 }
 
@@ -52,8 +56,6 @@ void processMouseScroll(GLFWwindow* window, double x_offset, double y_offset) {
 }
 
 int main() {
-    constexpr int WINDOW_WIDTH{800};
-    constexpr int WINDOW_HEIGHT{600};
 
     spdlog::set_level(spdlog::level::debug);
 
@@ -68,7 +70,7 @@ int main() {
         spdlog::error("GLFW ERROR:\nErorr code: {}\nMessage: {}", e, msg);
     });
 
-    GLFWwindow* window{glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Orbits", nullptr, nullptr)};
+    GLFWwindow* window{glfwCreateWindow(utils::SCREEN_WIDTH, utils::SCREEN_HEIGHT, "Orbits", nullptr, nullptr)};
 
     if(window == nullptr) {
         spdlog::error("Cannot create a GLFW window!");
@@ -91,7 +93,7 @@ int main() {
         glViewport(0, 0, width, height);
     });
 
-    glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+    glViewport(0, 0, utils::SCREEN_WIDTH, utils::SCREEN_HEIGHT);
 
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEPTH_TEST);
@@ -116,80 +118,15 @@ int main() {
     
     sphere_program.link();
 
-    //Sphere sphere;
-    //sphere.calculateVertices(20, 20, 5.0f);
+    Sphere sphere;
+    sphere.calculateVertices(36, 18, 1.0f);
+
+    Sphere2 sphere2;
+    
 
     glm::mat4 model;
     glm::mat4 view;
     glm::mat4 projection;
-
-    float cube_vertices[] = {
-
-        // position           // normal            // diffuse texture // specular texture
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f, 1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,	1.0f,  1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,	1.0f,  1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,	0.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,	0.0f,  0.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f, 1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f, 1.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f, 1.0f,  1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,  0.0f,
-
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f, 0.0f,  1.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f, 0.0f,  1.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f, 0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f,  0.0f,
-
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f, 0.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f, 0.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f, 0.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f,  0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,  1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f, 1.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f, 1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f, 1.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,  1.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,  1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f, 1.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,  1.0f
-    };
-
-    unsigned int cube_vao;
-    glGenVertexArrays(1, &cube_vao);
-
-    glBindVertexArray(cube_vao);
-
-    unsigned int cube_vbo;
-    glGenBuffers(1, &cube_vbo);
-
-    glBindBuffer(GL_ARRAY_BUFFER, cube_vbo);
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cube_vertices), &cube_vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(0));
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(3 * sizeof(float)));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(6 * sizeof(float)));
-    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(8 * sizeof(float)));
-
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    glEnableVertexAttribArray(3);
 
     while(!glfwWindowShouldClose(window)) {
         processKeyboardInput(window);
@@ -197,25 +134,21 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f),
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        sphere_program.use();
-
-        glBindVertexArray(cube_vao);
-
         model = glm::mat4{ 1.0f };
-        model = glm::translate(model, glm::vec3{ 0.0f });
+        model = glm::translate(model, glm::vec3{ 0.0f, 0.0f, -2.0f });
 
         view = camera::Camera::getLookAtMatrix();
 
-        projection = glm::perspective(camera::Camera::getZoom(), 
+        projection = glm::perspective(glm::radians(camera::Camera::getZoom()), 
                                       utils::SCREEN_WIDTH / utils::SCREEN_HEIGHT, 0.1f, 100.0f);
+
+        sphere_program.use();
 
         sphere_program.setMatrix4fv("model", model);
         sphere_program.setMatrix4fv("view", view);
         sphere_program.setMatrix4fv("projection", projection);
 
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //sphere.draw();
+        sphere.draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

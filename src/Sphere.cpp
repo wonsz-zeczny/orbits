@@ -65,7 +65,7 @@ void Sphere::calculateVertices(unsigned int stack_count, unsigned int sector_cou
 
             vertex_pos.x = radius * cos(stack_angle) * cos(sector_angle);
             vertex_pos.y = radius * cos(stack_angle) * sin(sector_angle);
-
+ 
             v.position.x = radius * cos(stack_angle) * cos(sector_angle);
             v.position.y = radius * cos(stack_angle) * sin(sector_angle);
             v.position.z = radius * sin(stack_angle);
@@ -120,7 +120,7 @@ void Sphere::calculateVertices(unsigned int stack_count, unsigned int sector_cou
 void Sphere::draw() const {
     glBindVertexArray(vao);
 
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, indices.data());
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLvoid*)(0));
     
     glBindVertexArray(0);
 }

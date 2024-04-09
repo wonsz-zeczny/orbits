@@ -1,5 +1,7 @@
 #include "Camera.hpp"
 
+#include <spdlog/spdlog.h>
+
 #include <glm/gtc/matrix_transform.hpp>
 
 

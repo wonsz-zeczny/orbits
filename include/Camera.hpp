@@ -25,8 +25,8 @@ class Camera {
         static glm::vec3 getPosition();
         static glm::vec3 getDirection();
 
-    private:
         static void updateCameraVectors();
+    private:
 
         static inline glm::vec3 position{ 0.0f, 0.0f, 0.0f };
         static inline glm::vec3 direction{ 0.0f, 0.0f, -1.0f };
@@ -38,7 +38,7 @@ class Camera {
         static inline float pitch{ 0.0f };
         static inline float speed{ 5.0f };
         static inline float zoom{ 45.0f };
-        static inline float mouse_sensitivity{ 0.05f };
+        static inline float mouse_sensitivity{ 0.2f };
     };
 }
 
