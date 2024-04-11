@@ -4,7 +4,7 @@ add_library(orbits-lib
     Program.cpp
     Camera.cpp
     Sphere.cpp
-    Sphere2.cpp)
+    )
 
 target_include_directories(orbits-lib PUBLIC "${CMAKE_SOURCE_DIR}/include")
 

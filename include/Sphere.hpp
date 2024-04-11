@@ -11,6 +11,7 @@ class Sphere {
 
         void calculateVertices(unsigned int stack_count, unsigned int sector_count, float radius);
         void draw() const;
+        void drawLinesOnSphere() const;
 
     private:
         void clearMemory();
@@ -20,7 +21,9 @@ class Sphere {
         std::vector<unsigned int> indices{};
         std::vector<unsigned int> line_indices{};
 
-        unsigned int vao;
-        unsigned int ebo;
+        unsigned int sphere_vao;
+        unsigned int lines_vao;
+        unsigned int sphere_ebo;
+        unsigned int lines_ebo;
         unsigned int vbo;
 };

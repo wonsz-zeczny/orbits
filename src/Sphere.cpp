@@ -8,9 +8,11 @@
 
 
 Sphere::Sphere() {
-    glGenVertexArrays(1, &vao);
+    glGenVertexArrays(1, &sphere_vao);
+    glGenVertexArrays(1, &lines_vao);
 
-    glGenBuffers(1, &ebo);
+    glGenBuffers(1, &sphere_ebo);
+    glGenBuffers(1, &lines_ebo);
     glGenBuffers(1, &vbo);
 }
 
@@ -19,8 +21,8 @@ void Sphere::clearMemory(){
 }
 
 void Sphere::loadDataToGPU() const {
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBindVertexArray(sphere_vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, sphere_ebo);
 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
@@ -36,80 +38,99 @@ void Sphere::loadDataToGPU() const {
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
 
+    glBindVertexArray(lines_vao);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lines_ebo);
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * line_indices.size(), line_indices.data(), GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(utils::Vertex), (GLvoid*)(0));
+
+    glEnableVertexAttribArray(0);
+
     glBindVertexArray(0);
 }
 
 void Sphere::calculateVertices(unsigned int stack_count, unsigned int sector_count, float radius) {
     clearMemory();
 
-    glm::vec3 vertex_pos;
-    float tex_coord_t;
-    
-    double length_inverse{1.0 / radius};
+    float length_inverse = 1.0f / radius;
 
-    double stack_step{std::numbers::pi / stack_count};
-    double sector_step{2 * std::numbers::pi / sector_count};
-    
-    double stack_angle;
-    double sector_angle;
+    float sector_step = 2 * std::numbers::pi / sector_count;
+    float stack_step = std::numbers::pi / stack_count;
 
-    for(auto i{0}; i <= stack_count; ++i) {
-        utils::Vertex v;
+    for (auto i{ 0 }; i <= stack_count; ++i)
+    {
+        float stack_angle{ static_cast<float>(std::numbers::pi / 2 - i * stack_step) };        // starting from pi/2 to -pi/2
+        float xy{ radius * cosf(stack_angle) };                                 //  r * cos(u)
+        float z{ radius * sinf(stack_angle) };                                //    r * sin(u)
 
-        stack_angle = (std::numbers::pi / 2) - i * stack_step;
+        // add (sectorCount+1) vertices per stack
+        // the first and last vertices have same position and normal, but different tex coords
+        for (auto j{ 0 }; j <= sector_count; ++j)
+        {
+            utils::Vertex v;
 
-        tex_coord_t = static_cast<float>(i) / stack_count;
+            float sector_angle{ j * sector_step };           // starting from 0 to 2pi
 
-        for(auto j{0}; j <= sector_count; ++j) {
-            sector_angle = j * sector_step;
+            // vertex position
+            float x{ xy * cosf(sector_angle) };             // r * cos(u) * cos(v)
+            float y{ xy * sinf(sector_angle) };             // r * cos(u) * sin(v)
 
-            vertex_pos.x = radius * cos(stack_angle) * cos(sector_angle);
-            vertex_pos.y = radius * cos(stack_angle) * sin(sector_angle);
- 
-            v.position.x = radius * cos(stack_angle) * cos(sector_angle);
-            v.position.y = radius * cos(stack_angle) * sin(sector_angle);
-            v.position.z = radius * sin(stack_angle);
+            // normalized vertex normal
+            float nx{ x * length_inverse };
+            float ny{ y * length_inverse };
+            float nz{ z * length_inverse };
 
-            v.normal.x = v.position.x * length_inverse;
-            v.normal.y = v.position.y * length_inverse;
-            v.normal.z = v.position.z * length_inverse;
+            // vertex tex coord between [0, 1]
+            float s{ static_cast<float>(j) / sector_count };
+            float t{ static_cast<float>(i) / stack_count };
 
-            v.tex_coords.s = static_cast<float>(j) / sector_count;
-            v.tex_coords.t = tex_coord_t;
+            v.position.x = x;
+            v.position.y = y;
+            v.position.z = z;
+
+            v.normal.x = nx;
+            v.normal.y = ny;
+            v.normal.z = nz;
+
+            v.tex_coords.s = s;
+            v.tex_coords.t = t;
+
+            vertices_data.push_back(std::move(v));
         }
-
-        vertices_data.push_back(std::move(v));
     }
 
-    unsigned int stack_top_left_index;
-    unsigned int stack_bottom_left_index;
+    // indices
+    //  k1--k1+1
+    //  |  / |
+    //  | /  |
+    //  k2--k2+1
+    unsigned int k1, k2;
 
-    for(auto i{0}; i < stack_count; ++i) {
-        stack_top_left_index = i * (sector_count + 1); // Current stack beginning
-        stack_bottom_left_index = stack_top_left_index + sector_count + 1; // Next stack beginning
+    for (int i = 0; i < stack_count; ++i)
+    {
+        k1 = i * (sector_count + 1);     // beginning of current stack
+        k2 = k1 + sector_count + 1;      // beginning of next stack
 
-        for(auto j{0}; j < sector_count; ++j, ++stack_top_left_index, ++stack_bottom_left_index) {
-
-            if(i != 0){
-                indices.push_back(stack_top_left_index);
-                indices.push_back(stack_bottom_left_index);
-                indices.push_back(stack_top_left_index + 1);
+        for (int j = 0; j < sector_count; ++j, ++k1, ++k2)
+        {
+            // 2 triangles per sector excluding 1st and last stacks
+            if (i != 0) {
+                indices.insert(indices.end(), { k1, k2, k1 + 1 });   // k1---k2---k1+1
             }
 
-            if(i != (stack_count - 1)) {
-                indices.push_back(stack_top_left_index + 1);
-                indices.push_back(stack_bottom_left_index);
-                indices.push_back(stack_bottom_left_index + 1);
+            if (i != (stack_count - 1)) {
+                indices.insert(indices.end(), { k1 + 1, k2, k2 + 1 }); // k1+1---k2---k2+1
             }
 
-            // Vertical lines k1 => k2
-            line_indices.push_back(stack_top_left_index);
-            line_indices.push_back(stack_bottom_left_index);
+            // vertical lines for all stacks
+            line_indices.insert(line_indices.end(), { k1, k2 });
 
-            // Horizontal lines k1 => k1 + 1
-            if(i != 0) {
-                line_indices.push_back(stack_top_left_index);
-                line_indices.push_back(stack_top_left_index + 1);
+            if (i != 0) { // horizontal lines except 1st stack
+                line_indices.insert(line_indices.end(), { k1, k1 + 1 });
             }
         }
     }
@@ -118,9 +139,17 @@ void Sphere::calculateVertices(unsigned int stack_count, unsigned int sector_cou
 }
 
 void Sphere::draw() const {
-    glBindVertexArray(vao);
+    glBindVertexArray(sphere_vao);
 
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLvoid*)(0));
     
+    glBindVertexArray(0);
+}
+
+void Sphere::drawLinesOnSphere() const {
+    glBindVertexArray(lines_vao);
+
+    glDrawElements(GL_LINES, line_indices.size(), GL_UNSIGNED_INT, (GLvoid*)(0));
+
     glBindVertexArray(0);
 }

@@ -101,28 +101,39 @@ int main() {
     glDebugMessageCallback(debugOpenGLMessageCallback, nullptr);
 
     Program sphere_program;
+    Program lines_program;
 
     {
-        Shader vertex_shader{GL_VERTEX_SHADER};
-        vertex_shader.loadShaderCode(SHADERS_DIR"sphere-vertex.glsl");
+        Shader sphere_vertex_shader{GL_VERTEX_SHADER};
+        sphere_vertex_shader.loadShaderCode(SHADERS_DIR"sphere-vertex.glsl");
 
-        Shader fragment_shader{GL_FRAGMENT_SHADER};
-        fragment_shader.loadShaderCode(SHADERS_DIR"sphere-fragment.glsl");
+        Shader sphere_fragment_shader{GL_FRAGMENT_SHADER};
+        sphere_fragment_shader.loadShaderCode(SHADERS_DIR"sphere-fragment.glsl");
 
-        vertex_shader.compileShaderCode();
-        fragment_shader.compileShaderCode();
+        sphere_vertex_shader.compileShaderCode();
+        sphere_fragment_shader.compileShaderCode();
 
-        sphere_program.attachShader(vertex_shader.getShaderID());
-        sphere_program.attachShader(fragment_shader.getShaderID());
+        sphere_program.attachShader(sphere_vertex_shader.getShaderID());
+        sphere_program.attachShader(sphere_fragment_shader.getShaderID());
+
+        Shader lines_vertex_shader{ GL_VERTEX_SHADER };
+        lines_vertex_shader.loadShaderCode(SHADERS_DIR"lines-vertex.glsl");
+
+        Shader lines_fragment_shader{ GL_FRAGMENT_SHADER };
+        lines_fragment_shader.loadShaderCode(SHADERS_DIR"lines-fragment.glsl");
+
+        lines_vertex_shader.compileShaderCode();
+        lines_fragment_shader.compileShaderCode();
+
+        lines_program.attachShader(lines_vertex_shader.getShaderID());
+        lines_program.attachShader(lines_fragment_shader.getShaderID());
     }
     
     sphere_program.link();
+    lines_program.link();
 
     Sphere sphere;
-    sphere.calculateVertices(36, 18, 1.0f);
-
-    Sphere2 sphere2;
-    
+    sphere.calculateVertices(18, 36, 1.0f);
 
     glm::mat4 model;
     glm::mat4 view;
@@ -149,6 +160,14 @@ int main() {
         sphere_program.setMatrix4fv("projection", projection);
 
         sphere.draw();
+
+        lines_program.use();
+
+        lines_program.setMatrix4fv("model", model);
+        lines_program.setMatrix4fv("view", view);
+        lines_program.setMatrix4fv("projection", projection);
+
+        sphere.drawLinesOnSphere();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
