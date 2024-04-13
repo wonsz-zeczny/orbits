@@ -3,7 +3,7 @@
 #include "Camera.hpp"
 #include "Shader.hpp"
 #include "Program.hpp"
-#include "planetary-system/Planet.hpp"
+#include "planetary-system/CelestialBody.hpp"
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
@@ -25,7 +25,7 @@ void processKeyboardInput(GLFWwindow* window) {
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         camera::Camera::processCameraMovement(camera::Direction::Forward, deltatime);
-    } 
+    }
     else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         camera::Camera::processCameraMovement(camera::Direction::Left, deltatime);
     }
@@ -34,6 +34,9 @@ void processKeyboardInput(GLFWwindow* window) {
     }
     else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         camera::Camera::processCameraMovement(camera::Direction::Right, deltatime);
+    }
+    else if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        glfwSetWindowShouldClose(window, true);
     }
 }
 
@@ -131,7 +134,8 @@ int main() {
     sphere_program.link();
     lines_program.link();
 
-    Planet planet;
+    //planetary_system::CelestialBody sun{ };
+    //planetary_system::CelestialBody earth{};
 
     glm::mat4 model;
     glm::mat4 view;
@@ -157,7 +161,7 @@ int main() {
         sphere_program.setMatrix4fv("view", view);
         sphere_program.setMatrix4fv("projection", projection);
 
-        planet.draw();
+        earth.draw();
 
         lines_program.use();
 
@@ -165,7 +169,7 @@ int main() {
         lines_program.setMatrix4fv("view", view);
         lines_program.setMatrix4fv("projection", projection);
 
-        planet.drawWithGrid();
+        earth.drawLines();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

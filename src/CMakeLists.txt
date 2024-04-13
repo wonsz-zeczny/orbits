@@ -4,7 +4,7 @@ add_library(orbits-lib
     Program.cpp
     Camera.cpp
     "shapes/Sphere.cpp"
-    planetary-system/PlanetarySystem.cpp "planetary-system/Planet.cpp")
+    planetary-system/PlanetarySystem.cpp "planetary-system/CelestialBody.cpp")
 
 target_include_directories(orbits-lib PUBLIC "${CMAKE_SOURCE_DIR}/include")
 

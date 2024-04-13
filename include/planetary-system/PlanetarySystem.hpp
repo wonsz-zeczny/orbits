@@ -1,6 +1,6 @@
 #pragma once
 
-#include "planetary-system/Planet.hpp"
+#include "planetary-system/CelestialBody.hpp"
 
 #include <vector>
 
@@ -10,8 +10,8 @@ class PlanetarySystem {
 		PlanetarySystem() = default;
 
 		void draw() const;
-		void addPlanet();
+		void addCelestialBody(CelestialBody&& celestial_body);
 
 	private:
-		std::vector<Planet> planets;
+		std::vector<CelestialBody> celestial_bodies;
 };
