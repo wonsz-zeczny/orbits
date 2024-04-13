@@ -1,10 +1,9 @@
 #include "Init.hpp"
 #include "Utils.hpp"
 #include "Camera.hpp"
-#include "Sphere.hpp"
-#include "Sphere2.hpp"
 #include "Shader.hpp"
 #include "Program.hpp"
+#include "planetary-system/Planet.hpp"
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
@@ -132,8 +131,7 @@ int main() {
     sphere_program.link();
     lines_program.link();
 
-    Sphere sphere;
-    sphere.calculateVertices(18, 36, 1.0f);
+    Planet planet;
 
     glm::mat4 model;
     glm::mat4 view;
@@ -159,7 +157,7 @@ int main() {
         sphere_program.setMatrix4fv("view", view);
         sphere_program.setMatrix4fv("projection", projection);
 
-        sphere.draw();
+        planet.draw();
 
         lines_program.use();
 
@@ -167,7 +165,7 @@ int main() {
         lines_program.setMatrix4fv("view", view);
         lines_program.setMatrix4fv("projection", projection);
 
-        sphere.drawLinesOnSphere();
+        planet.drawWithGrid();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

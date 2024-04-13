@@ -3,8 +3,8 @@ add_library(orbits-lib
     Shader.cpp
     Program.cpp
     Camera.cpp
-    Sphere.cpp
-    )
+    "shapes/Sphere.cpp"
+    planetary-system/PlanetarySystem.cpp "planetary-system/Planet.cpp")
 
 target_include_directories(orbits-lib PUBLIC "${CMAKE_SOURCE_DIR}/include")
 

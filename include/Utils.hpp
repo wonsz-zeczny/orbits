@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 
+
 namespace utils {
     constexpr float SCREEN_WIDTH{ 800.0f };
     constexpr float SCREEN_HEIGHT{ 600.0f };

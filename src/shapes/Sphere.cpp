@@ -1,10 +1,13 @@
-#include "Sphere.hpp"
+#include "shapes/Sphere.hpp"
 
 #include <cmath>
 #include <numbers>
 
 #include <glad/gl.h>
 #include <glm/glm.hpp>
+
+
+using namespace shapes;
 
 
 Sphere::Sphere() {
@@ -14,10 +17,14 @@ Sphere::Sphere() {
     glGenBuffers(1, &sphere_ebo);
     glGenBuffers(1, &lines_ebo);
     glGenBuffers(1, &vbo);
+
+    calculateVertices();
 }
 
 void Sphere::clearMemory(){
     vertices_data.clear();
+    indices.clear();
+    line_indices.clear();
 }
 
 void Sphere::loadDataToGPU() const {
@@ -39,7 +46,6 @@ void Sphere::loadDataToGPU() const {
     glEnableVertexAttribArray(2);
 
     glBindVertexArray(lines_vao);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lines_ebo);
 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * line_indices.size(), line_indices.data(), GL_STATIC_DRAW);
@@ -53,7 +59,15 @@ void Sphere::loadDataToGPU() const {
     glBindVertexArray(0);
 }
 
-void Sphere::calculateVertices(unsigned int stack_count, unsigned int sector_count, float radius) {
+void Sphere::configureGeometry(unsigned int stack_count, unsigned int sector_count, float radius) {
+    stack_count = stack_count;
+    sector_count = sector_count;
+    radius = radius;
+
+    calculateVertices();
+}
+
+void Sphere::calculateVertices() {
     clearMemory();
 
     float length_inverse = 1.0f / radius;
