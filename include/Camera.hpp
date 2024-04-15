@@ -26,6 +26,7 @@ class Camera {
         static glm::vec3 getDirection();
 
         static void updateCameraVectors();
+
     private:
 
         static inline glm::vec3 position{ 0.0f, 0.0f, 0.0f };

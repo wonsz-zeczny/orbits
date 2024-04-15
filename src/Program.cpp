@@ -23,7 +23,7 @@ unsigned int Program::getProgramID() const {
     return id;
 }
 
-void Program::setMatrix4fv(const char* name, const glm::mat4& matrix) {
+void Program::setMatrix4fv(const char* name, const glm::mat4& matrix) const {
 	glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(matrix));
 }
 

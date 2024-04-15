@@ -4,6 +4,7 @@
 #include "Shader.hpp"
 #include "Program.hpp"
 #include "planetary-system/CelestialBody.hpp"
+#include "planetary-system/PlanetarySystem.hpp"
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
@@ -133,13 +134,32 @@ int main() {
     
     sphere_program.link();
     lines_program.link();
+    
+    planetary_system::PlanetarySystem solar_system;
 
-    //planetary_system::CelestialBody sun{ };
-    //planetary_system::CelestialBody earth{};
+    solar_system.addCelestialBody(planetary_system::CelestialBody{
+        planetary_system::CelestialBodyParams{
+                .name = "Sun",
+                .position = glm::vec3{0.0f},
+                .direction = glm::vec3{0.0f, 0.0f, 1.0f},
+                .distance_from_star_au = 0,
+                .axial_tilt_degrees = 7.25f,
+                .rotation_speed_kmh = 1997.0f,
+                .orbital_speed_kmh = 0.0f
+            }
+        });
 
-    glm::mat4 model;
-    glm::mat4 view;
-    glm::mat4 projection;
+    solar_system.addCelestialBody(planetary_system::CelestialBody{
+        planetary_system::CelestialBodyParams{
+                .name = "Earth",
+                .position = glm::vec3{0.0f},
+                .direction = glm::vec3{0.0f, 0.0f, -1.0f},
+                .distance_from_star_au = 1.0f,
+                .axial_tilt_degrees = 24.44f,
+                .rotation_speed_kmh = 1670.0f,
+                .orbital_speed_kmh = 107280.0f
+            }
+        });
 
     while(!glfwWindowShouldClose(window)) {
         processKeyboardInput(window);
@@ -147,29 +167,8 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f),
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        model = glm::mat4{ 1.0f };
-        model = glm::translate(model, glm::vec3{ 0.0f, 0.0f, -2.0f });
-
-        view = camera::Camera::getLookAtMatrix();
-
-        projection = glm::perspective(glm::radians(camera::Camera::getZoom()), 
-                                      utils::SCREEN_WIDTH / utils::SCREEN_HEIGHT, 0.1f, 100.0f);
-
-        sphere_program.use();
-
-        sphere_program.setMatrix4fv("model", model);
-        sphere_program.setMatrix4fv("view", view);
-        sphere_program.setMatrix4fv("projection", projection);
-
-        earth.draw();
-
-        lines_program.use();
-
-        lines_program.setMatrix4fv("model", model);
-        lines_program.setMatrix4fv("view", view);
-        lines_program.setMatrix4fv("projection", projection);
-
-        earth.drawLines();
+        solar_system.draw(sphere_program);
+        solar_system.updateCelestialBodiesVectors();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

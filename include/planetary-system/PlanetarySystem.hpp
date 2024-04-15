@@ -1,17 +1,22 @@
 #pragma once
 
+#include "Camera.hpp"
+#include "Program.hpp"
 #include "planetary-system/CelestialBody.hpp"
 
 #include <vector>
 
 
-class PlanetarySystem {
-	public:
-		PlanetarySystem() = default;
+namespace planetary_system {
+	class PlanetarySystem {
+		public:
+			PlanetarySystem() = default;
 
-		void draw() const;
-		void addCelestialBody(CelestialBody&& celestial_body);
+			void draw(const Program& program) const;
+			void addCelestialBody(planetary_system::CelestialBody&& celestial_body);
+			void updateCelestialBodiesVectors();
 
-	private:
-		std::vector<CelestialBody> celestial_bodies;
-};
+		private:
+			std::vector<planetary_system::CelestialBody> celestial_bodies;
+	};
+}

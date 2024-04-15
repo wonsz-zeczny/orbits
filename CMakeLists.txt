@@ -8,7 +8,7 @@ project(orbits)
 if(${MSVC})
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20") 
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
 
@@ -30,7 +30,7 @@ FetchContent_Declare(
         GIT_TAG 1.0.1
 )
 
-FetchContent_MakeAvailable(glfw glm spdlog) 
+FetchContent_MakeAvailable(glfw glm spdlog)
 
 add_subdirectory(vendor)
 
