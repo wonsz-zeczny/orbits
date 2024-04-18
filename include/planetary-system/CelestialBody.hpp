@@ -10,6 +10,7 @@
 namespace planetary_system {
 	struct CelestialBodyParams {
 		std::string_view name;
+		std::string_view texture_filepath;
 		glm::vec3 position;
 		glm::vec3 direction;
 		float distance_from_star_au;

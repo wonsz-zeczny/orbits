@@ -5,7 +5,8 @@ using namespace planetary_system;
 
 
 CelestialBody::CelestialBody(CelestialBodyParams&& celestial_body_params) 
-	: celestial_body_params{ std::move(celestial_body_params) } {
+	: celestial_body_params{ std::move(celestial_body_params) }, 
+	  sphere{ celestial_body_params.texture_filepath, celestial_body_params.name } {
 	updateVectors();
 }
 

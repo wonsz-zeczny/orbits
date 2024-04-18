@@ -140,6 +140,7 @@ int main() {
     solar_system.addCelestialBody(planetary_system::CelestialBody{
         planetary_system::CelestialBodyParams{
                 .name = "Sun",
+                .texture_filepath = RESOURCES_DIR"sun-texture.jpg",
                 .position = glm::vec3{0.0f},
                 .direction = glm::vec3{0.0f, 0.0f, 1.0f},
                 .distance_from_star_au = 0,
@@ -152,6 +153,7 @@ int main() {
     solar_system.addCelestialBody(planetary_system::CelestialBody{
         planetary_system::CelestialBodyParams{
                 .name = "Earth",
+                .texture_filepath = RESOURCES_DIR"earth-texture.jpg",
                 .position = glm::vec3{0.0f},
                 .direction = glm::vec3{0.0f, 0.0f, -1.0f},
                 .distance_from_star_au = 1.0f,
@@ -160,7 +162,7 @@ int main() {
                 .orbital_speed_kmh = 107280.0f
             }
         });
-
+    
     while(!glfwWindowShouldClose(window)) {
         processKeyboardInput(window);
 

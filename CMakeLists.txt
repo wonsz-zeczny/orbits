@@ -41,3 +41,4 @@ add_executable(app main.cpp)
 target_link_libraries(app PUBLIC orbits-lib) 
 
 target_compile_definitions(app PUBLIC SHADERS_DIR="${CMAKE_SOURCE_DIR}/shaders/")
+target_compile_definitions(app PUBLIC RESOURCES_DIR="${CMAKE_SOURCE_DIR}/resources/")

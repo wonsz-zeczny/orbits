@@ -10,15 +10,14 @@
 using namespace shapes;
 
 
-Sphere::Sphere() {
+Sphere::Sphere(std::string_view texture_filepath, std::string_view texture_uniform_name) 
+    : texture{ texture_filepath, Texture::TextureGLParams{}, texture_uniform_name } {
     glGenVertexArrays(1, &sphere_vao);
     glGenVertexArrays(1, &lines_vao);
 
     glGenBuffers(1, &sphere_ebo);
     glGenBuffers(1, &lines_ebo);
     glGenBuffers(1, &vbo);
-
-    calculateVertices();
 }
 
 void Sphere::clearMemory(){
@@ -155,6 +154,7 @@ void Sphere::calculateVertices() {
 void Sphere::draw() const {
     glBindVertexArray(sphere_vao);
 
+    texture.bind();
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLvoid*)(0));
     
     glBindVertexArray(0);
