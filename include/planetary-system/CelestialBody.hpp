@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Program.hpp"
 #include "shapes/Sphere.hpp"
 
 #include <glm/glm.hpp>
@@ -13,6 +14,7 @@ namespace planetary_system {
 		std::string_view texture_filepath;
 		glm::vec3 position;
 		glm::vec3 direction;
+		float radius_km;
 		float distance_from_star_au;
 		float axial_tilt_degrees;
 		float rotation_speed_kmh;
@@ -34,7 +36,7 @@ namespace planetary_system {
 			void updatePosition();
 			void updateDirection();
 
-			shapes::Sphere sphere{};
+			shapes::Sphere sphere;
 			CelestialBodyParams celestial_body_params;
 	};
 }

@@ -27,9 +27,9 @@ namespace shapes {
 
             Texture texture;
 
-            unsigned int stack_count{18};
-            unsigned int sector_count{36};
-            float radius{1.0f};
+            unsigned int stack_count{36};
+            unsigned int sector_count{72};
+            float radius{2.0f};
 
             unsigned int sphere_vao{};
             unsigned int lines_vao{};

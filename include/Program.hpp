@@ -3,6 +3,8 @@
 #include <glad/gl.h>
 #include <glm/glm.hpp>
 
+#include <string_view>
+
 
 class Program {
     public:
@@ -14,7 +16,7 @@ class Program {
 
         unsigned int getProgramID() const;
 
-        void setMatrix4fv(const char* name, const glm::mat4& matrix) const;
+        void setMatrix4fv(std::string_view name, const glm::mat4& matrix) const;
 
     private:
         void printLinkingLogs() const;

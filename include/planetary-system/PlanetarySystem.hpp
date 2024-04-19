@@ -17,6 +17,7 @@ namespace planetary_system {
 			void updateCelestialBodiesVectors();
 
 		private:
+			float distance_factor{ 5.0f };
 			std::vector<planetary_system::CelestialBody> celestial_bodies;
 	};
 }
