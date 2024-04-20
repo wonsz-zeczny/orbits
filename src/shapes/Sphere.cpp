@@ -5,16 +5,27 @@
 
 #include <glad/gl.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 
 using namespace shapes;
 
 
-Sphere::Sphere(std::string_view texture_filepath, std::string_view texture_uniform_name) 
-    : texture{ texture_filepath, Texture::TextureGLParams{}, texture_uniform_name } {
+Sphere::Sphere(std::string_view texture_filepath, std::string_view texture_uniform_name,
+    ShapeOrientationData&& shape_orientation_data)
+    : texture{ texture_filepath, Texture::TextureGLParams{}, texture_uniform_name },
+      shape_orientation_data{std::move(shape_orientation_data)} {
     glGenVertexArrays(1, &sphere_vao);
     glGenVertexArrays(1, &lines_vao);
 
+    glm::vec4 initial_position{ shape_orientation_data.position, 0.0f };
+
+    glm::mat4 initial_rotation_transform{ 1.0f };
+    initial_rotation_transform = glm::rotate(initial_rotation_transform,
+        glm::radians(shape_orientation_data.initial_rotation_degrees), shape_orientation_data.initial_rotation_axis);
+
+    shape_orientation_data.position = initial_rotation_transform * initial_position;
+    
     glGenBuffers(1, &sphere_ebo);
     glGenBuffers(1, &lines_ebo);
     glGenBuffers(1, &vbo);
@@ -166,4 +177,8 @@ void Sphere::drawLinesOnSphere() const {
     glDrawElements(GL_LINES, line_indices.size(), GL_UNSIGNED_INT, (GLvoid*)(0));
 
     glBindVertexArray(0);
+}
+
+glm::vec3 Sphere::getPosition() const {
+    return shape_orientation_data.position;
 }

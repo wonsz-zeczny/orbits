@@ -19,8 +19,8 @@ void PlanetarySystem::draw(const Program& program) const {
 
 	for (const auto& celestial_body : celestial_bodies) {
 		glm::mat4 model{ glm::mat4{ 1.0f } };
-		model = glm::translate(model, glm::vec3{ 0.0f, 0.0f, 
-							   celestial_body.getPosition().z * distance_factor});
+
+		model = glm::translate(model, celestial_body.getPosition());
 
 		program.setMatrix4fv("model", model);
 

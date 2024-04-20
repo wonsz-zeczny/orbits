@@ -12,13 +12,12 @@ namespace planetary_system {
 	struct CelestialBodyParams {
 		std::string_view name;
 		std::string_view texture_filepath;
-		glm::vec3 position;
-		glm::vec3 direction;
 		float radius_km;
 		float distance_from_star_au;
 		float axial_tilt_degrees;
 		float rotation_speed_kmh;
 		float orbital_speed_kmh;
+		shapes::ShapeOrientationData shape_orientation_data;
 	};
 	
 	class CelestialBody {
