@@ -4,9 +4,9 @@
 using namespace planetary_system;
 
 
-CelestialBody::CelestialBody(CelestialBodyParams&& celestial_body_params) 
+CelestialBody::CelestialBody(CelestialBodyParams&& celestial_body_params, shapes::ShapeOrientationData&& shape_orientation_data) 
 	: celestial_body_params{ std::move(celestial_body_params) }, 
-	  sphere{ celestial_body_params.texture_filepath, "CelestialBodyTexture", std::move(celestial_body_params.shape_orientation_data)} {
+	  sphere{ celestial_body_params.texture_filepath, "CelestialBodyTexture", std::move(shape_orientation_data) } {
 	updateVectors();
 	sphere.calculateVertices();
 }
@@ -33,11 +33,12 @@ glm::vec3 CelestialBody::getPosition() const {
 }
 
 glm::vec3 CelestialBody::getDirection() const {
-	return celestial_body_params.shape_orientation_data.position;
+	//return celestial_body_params.shape_orientation_data.position;
+	return {};
 }
 
 void CelestialBody::updatePosition() {
-	celestial_body_params.shape_orientation_data.position.z = celestial_body_params.distance_from_star_au;
+	//celestial_body_params.shape_orientation_data.position.z = celestial_body_params.distance_from_star_au;
 }
 
 void CelestialBody::updateDirection() {

@@ -154,20 +154,21 @@ int main() {
     //    });
 
     solar_system.addCelestialBody(planetary_system::CelestialBody{
-        planetary_system::CelestialBodyParams{
-                .name = "Earth",
-                .texture_filepath = RESOURCES_DIR"earth-texture.jpg",
-                .radius_km = 6371.0f,
-                .distance_from_star_au = 1.0f,
-                .axial_tilt_degrees = 24.44f,
-                .rotation_speed_kmh = 1670.0f,
-                .orbital_speed_kmh = 107280.0f,
-                .shape_orientation_data = shapes::ShapeOrientationData{
-                    .position = glm::vec3{0.0f},
+            planetary_system::CelestialBodyParams{
+                    .name = "Earth",
+                    .texture_filepath = RESOURCES_DIR"earth-texture.jpg",
+                    .radius_km = 6371.0f,
+                    .distance_from_star_au = 1.0f,
+                    .axial_tilt_degrees = 24.44f,
+                    .rotation_speed_kmh = 1670.0f,
+                    .orbital_speed_kmh = 107280.0f
+            },
+            shapes::ShapeOrientationData{
+                    .position = glm::vec3{0.0f, 0.0f, 0.0f},
                     .direction = glm::vec3{0.0f, 0.0f, -1.0f},
                     .initial_rotation_axis = glm::vec3{1.0f, 0.0f, 0.0f},
-                    .initial_rotation_degrees = -90.0f
-                }
+                    .initial_rotation_degrees = -90.0f,
+                    .distance_from_origin = 1.0f
             }
         });
     

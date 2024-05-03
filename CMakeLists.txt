@@ -30,7 +30,12 @@ FetchContent_Declare(
         GIT_TAG 1.0.1
 )
 
-FetchContent_MakeAvailable(glfw glm spdlog)
+FetchContent_Declare(
+        json
+        URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+)
+
+FetchContent_MakeAvailable(glfw glm spdlog json) 
 
 add_subdirectory(vendor)
 

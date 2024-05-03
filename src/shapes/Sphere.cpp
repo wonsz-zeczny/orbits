@@ -18,7 +18,7 @@ Sphere::Sphere(std::string_view texture_filepath, std::string_view texture_unifo
     glGenVertexArrays(1, &sphere_vao);
     glGenVertexArrays(1, &lines_vao);
 
-    glm::vec4 initial_position{ shape_orientation_data.position, 0.0f };
+    glm::vec4 initial_position{ 0.0f, 0.0f, this->shape_orientation_data.distance_from_origin * 5, 0.0f };
 
     glm::mat4 initial_rotation_transform{ 1.0f };
     initial_rotation_transform = glm::rotate(initial_rotation_transform,

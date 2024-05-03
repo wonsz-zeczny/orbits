@@ -17,12 +17,12 @@ namespace planetary_system {
 		float axial_tilt_degrees;
 		float rotation_speed_kmh;
 		float orbital_speed_kmh;
-		shapes::ShapeOrientationData shape_orientation_data;
 	};
 	
 	class CelestialBody {
 		public:
-			CelestialBody(CelestialBodyParams&& celestial_body_params);
+			CelestialBody(CelestialBodyParams&& celestial_body_params, 
+				shapes::ShapeOrientationData&& shape_orientation_data);
 
 			void draw() const;
 			void drawLines() const;

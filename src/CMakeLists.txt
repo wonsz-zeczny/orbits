@@ -6,8 +6,9 @@ add_library(orbits-lib
     Camera.cpp
     shapes/Sphere.cpp
     planetary-system/PlanetarySystem.cpp 
-    planetary-system/CelestialBody.cpp)
+    planetary-system/CelestialBody.cpp 
+    planetary-system/CelestialBodyDataLoader.cpp)
 
 target_include_directories(orbits-lib PUBLIC "${CMAKE_SOURCE_DIR}/include")
 
-target_link_libraries(orbits-lib PUBLIC vendor-libs glfw glm spdlog)
+target_link_libraries(orbits-lib PUBLIC vendor-libs glfw glm spdlog nlohmann_json::nlohmann_json)

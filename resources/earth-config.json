@@ -1,0 +1,31 @@
+{
+  "celestial-body-params": {
+    "name": "earth",
+    "texture-name": "earth-texture.jpg",
+    "radius-km": 6371.0,
+    "distance-from-star-au": 1.0,
+    "axial-tilt-degrees": 24.44,
+    "rotation-speed-kmh": 1670.0,
+    "orbital-speed-kmh": 107280.0
+  },
+
+  "shape-orientation-data": {
+    "position": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "direction": [
+      0.0,
+      0.0,
+      -1.0
+    ],
+    "initial-rotation-axis": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "initial-rotation-degrees": -90.0,
+    "distance-from-origin": 1.0
+  }
+}

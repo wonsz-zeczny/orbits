@@ -17,6 +17,7 @@ namespace shapes {
         glm::vec3 right;
         glm::vec3 initial_rotation_axis{ 1.0f };
         float initial_rotation_degrees{ 0.0f };
+        float distance_from_origin;
     };
 
     class Sphere {
