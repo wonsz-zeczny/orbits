@@ -12,6 +12,11 @@ else()
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
 
+set(SHADERS_DIR "${CMAKE_SOURCE_DIR}/shaders/")
+set(RESOURCES_DIR "${CMAKE_SOURCE_DIR}/resources/")
+
+configure_file("${CMAKE_SOURCE_DIR}/include/Utils.hpp.in" "${CMAKE_SOURCE_DIR}/include/Utils.hpp") 
+
 FetchContent_Declare(
         glfw
         GIT_REPOSITORY https://github.com/glfw/glfw.git
@@ -44,6 +49,3 @@ add_subdirectory(src)
 add_executable(app main.cpp)
 
 target_link_libraries(app PUBLIC orbits-lib) 
-
-target_compile_definitions(app PUBLIC SHADERS_DIR="${CMAKE_SOURCE_DIR}/shaders/")
-target_compile_definitions(app PUBLIC RESOURCES_DIR="${CMAKE_SOURCE_DIR}/resources/")

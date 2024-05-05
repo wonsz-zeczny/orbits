@@ -1,0 +1,30 @@
+{
+  "celestial-body-params": {
+    "name": "sun",
+    "texture-name": "sun-texture.jpg",
+    "radius-km": 696340.0,
+    "distance-from-star-au": 0.0,
+    "axial-tilt-degrees": 7.25,
+    "rotation-speed-kmh": 7189.0,
+    "orbital-speed-kmh": 0.0
+  },
+
+  "shape-orientation-data": {
+    "position": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "direction": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "initial-rotation-axis": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "initial-rotation-degrees": 0.0
+  }
+}

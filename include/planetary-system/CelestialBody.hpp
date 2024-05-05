@@ -10,8 +10,8 @@
 
 namespace planetary_system {
 	struct CelestialBodyParams {
-		std::string_view name;
-		std::string_view texture_filepath;
+		std::string name;
+		std::string texture_filepath;
 		float radius_km;
 		float distance_from_star_au;
 		float axial_tilt_degrees;
@@ -21,8 +21,7 @@ namespace planetary_system {
 	
 	class CelestialBody {
 		public:
-			CelestialBody(CelestialBodyParams&& celestial_body_params, 
-				shapes::ShapeOrientationData&& shape_orientation_data);
+			CelestialBody(std::pair<CelestialBodyParams, shapes::ShapeOrientationData>&& celestial_body_params);
 
 			void draw() const;
 			void drawLines() const;

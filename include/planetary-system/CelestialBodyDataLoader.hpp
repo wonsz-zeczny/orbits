@@ -3,23 +3,17 @@
 #include "shapes/Sphere.hpp"
 #include "planetary-system/CelestialBody.hpp"
 
-#include <fstream>
-#include <utility>
-
 #include <nlohmann/json.hpp>
 
+#include <utility>
 
-namespace {
 
+namespace planetary_system::celestial_body_data_loader {
+	std::pair<CelestialBodyParams, shapes::ShapeOrientationData>
+		parseCelestialBodyConfig(std::string_view config_file_path);
 }
 
-namespace planetary_system {
-	class CelestialBodyDataLoader {
-		public:
-			static std::pair<CelestialBodyParams, shapes::ShapeOrientationData> 
-				parseCelestialBodyConfig(std::string_view config_file_path) {
-				std::ifstream config_file{ config_file_path.data()};
-				nlohmann::json config_json{ nlohmann::json::parse(config_file) };
-			}
-	};
+namespace planetary_system::celestial_body_data_loader::internal {
+	CelestialBodyParams parseCelestialBodyParams(const nlohmann::json& config_json);
+	shapes::ShapeOrientationData parseShapeOrientationData(const nlohmann::json& config_json);
 }

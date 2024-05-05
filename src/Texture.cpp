@@ -1,3 +1,4 @@
+#include "Utils.hpp"
 #include "Texture.hpp"
 
 #include <stb_image.h>
@@ -5,7 +6,7 @@
 #include <iostream>
 
 
-Texture::Texture(std::string_view texture_filepath, const TextureGLParams& texture_gl_params,
+Texture::Texture(std::string_view texture_filename, const TextureGLParams& texture_gl_params,
 	std::string_view texture_uniform_name)
 	: texture_gl_params{ texture_gl_params }, texture_uniform_name{ texture_uniform_name },
 	texture_unit{ active_texture_units_count++ } {
@@ -15,7 +16,10 @@ Texture::Texture(std::string_view texture_filepath, const TextureGLParams& textu
 	glActiveTexture(GL_TEXTURE0 + texture_unit);
 	glBindTexture(texture_gl_params.texture_type, texture_id);
 
-	unsigned char* pixels{ stbi_load(texture_filepath.data(), &width, &height, &channels, 0)};
+	std::string texture_filepath{ RESOURCES_DIR };
+	texture_filepath.append(texture_filename);
+	
+	unsigned char* pixels{ stbi_load(texture_filepath.c_str(), &width, &height, &channels, 0)};
 
 	glTexImage2D(texture_gl_params.texture_type, texture_gl_params.mipmap_level,
 		texture_gl_params.format_to_store, width, height, 0, texture_gl_params.input_format,

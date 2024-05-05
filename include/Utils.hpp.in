@@ -2,8 +2,8 @@
 
 #include <glm/glm.hpp>
 
-#define SHADERS_DIR "C:/Users/Darek/Desktop/Programowanie/orbits/shaders/"
-#define RESOURCES_DIR "C:/Users/Darek/Desktop/Programowanie/orbits/resources/"
+#define SHADERS_DIR "@SHADERS_DIR@"
+#define RESOURCES_DIR "@RESOURCES_DIR@"
 
 
 namespace utils {

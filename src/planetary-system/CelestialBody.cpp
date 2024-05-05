@@ -4,9 +4,9 @@
 using namespace planetary_system;
 
 
-CelestialBody::CelestialBody(CelestialBodyParams&& celestial_body_params, shapes::ShapeOrientationData&& shape_orientation_data) 
-	: celestial_body_params{ std::move(celestial_body_params) }, 
-	  sphere{ celestial_body_params.texture_filepath, "CelestialBodyTexture", std::move(shape_orientation_data) } {
+CelestialBody::CelestialBody(std::pair<CelestialBodyParams, shapes::ShapeOrientationData>&& celestial_body_params)
+	: sphere{ celestial_body_params.first.texture_filepath, "CelestialBodyTexture", std::move(celestial_body_params.second) },
+	  celestial_body_params{ std::move(celestial_body_params.first) } {
 	updateVectors();
 	sphere.calculateVertices();
 }

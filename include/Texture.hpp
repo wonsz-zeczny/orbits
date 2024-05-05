@@ -16,7 +16,7 @@ class Texture {
 			GLenum pixels_data_type{ GL_UNSIGNED_BYTE };
 		};
 
-		Texture(std::string_view texture_filepath, const TextureGLParams& texture_params,
+		Texture(std::string_view texture_filename, const TextureGLParams& texture_params,
 			std::string_view texture_uniform_name);
 
 		Texture() = delete;

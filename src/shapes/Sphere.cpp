@@ -18,13 +18,13 @@ Sphere::Sphere(std::string_view texture_filepath, std::string_view texture_unifo
     glGenVertexArrays(1, &sphere_vao);
     glGenVertexArrays(1, &lines_vao);
 
-    glm::vec4 initial_position{ 0.0f, 0.0f, this->shape_orientation_data.distance_from_origin * 5, 0.0f };
+    if (this->shape_orientation_data.initial_rotation_degrees != 0.0f) {
+        glm::mat4 move_to_position{ glm::translate(glm::mat4{1.0f}, shape_orientation_data.position) };
+        glm::mat4 initial_rotation_transform{ glm::rotate(move_to_position,
+            glm::radians(this->shape_orientation_data.initial_rotation_degrees), this->shape_orientation_data.initial_rotation_axis) };
 
-    glm::mat4 initial_rotation_transform{ 1.0f };
-    initial_rotation_transform = glm::rotate(initial_rotation_transform,
-        glm::radians(shape_orientation_data.initial_rotation_degrees), shape_orientation_data.initial_rotation_axis);
-
-    shape_orientation_data.position = initial_rotation_transform * initial_position;
+        shape_orientation_data.position = initial_rotation_transform * glm::vec4{ shape_orientation_data.position, 1.0f };
+    }
     
     glGenBuffers(1, &sphere_ebo);
     glGenBuffers(1, &lines_ebo);

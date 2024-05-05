@@ -25,7 +25,6 @@
       0.0,
       0.0
     ],
-    "initial-rotation-degrees": -90.0,
-    "distance-from-origin": 1.0
+    "initial-rotation-degrees": -180.0
   }
 }

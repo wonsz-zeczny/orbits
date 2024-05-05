@@ -5,6 +5,7 @@
 #include "Program.hpp"
 #include "planetary-system/CelestialBody.hpp"
 #include "planetary-system/PlanetarySystem.hpp"
+#include "planetary-system/CelestialBodyDataLoader.hpp"
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
@@ -137,41 +138,14 @@ int main() {
     
     planetary_system::PlanetarySystem solar_system;
 
-    //solar_system.addCelestialBody(planetary_system::CelestialBody{
-    //    planetary_system::CelestialBodyParams{
-    //            .name = "Sun",
-    //            .texture_filepath = RESOURCES_DIR"sun-texture.jpg",
-    //            .radius_km = 696340.0f,
-    //            .distance_from_star_au = 0,
-    //            .axial_tilt_degrees = 7.25f,
-    //            .rotation_speed_kmh = 7189.0f,
-    //            .orbital_speed_kmh = 0.0f,
-    //            .shape_orientation_data = shapes::ShapeOrientationData{
-    //                .position = glm::vec3{0.0f},
-    //                .direction = glm::vec3{0.0f, 0.0f, 1.0f},
-    //            }
-    //        }
-    //    });
+    solar_system.addCelestialBody(planetary_system::CelestialBody{
+            planetary_system::celestial_body_data_loader::parseCelestialBodyConfig(RESOURCES_DIR"sun-config.json")
+    });
 
     solar_system.addCelestialBody(planetary_system::CelestialBody{
-            planetary_system::CelestialBodyParams{
-                    .name = "Earth",
-                    .texture_filepath = RESOURCES_DIR"earth-texture.jpg",
-                    .radius_km = 6371.0f,
-                    .distance_from_star_au = 1.0f,
-                    .axial_tilt_degrees = 24.44f,
-                    .rotation_speed_kmh = 1670.0f,
-                    .orbital_speed_kmh = 107280.0f
-            },
-            shapes::ShapeOrientationData{
-                    .position = glm::vec3{0.0f, 0.0f, 0.0f},
-                    .direction = glm::vec3{0.0f, 0.0f, -1.0f},
-                    .initial_rotation_axis = glm::vec3{1.0f, 0.0f, 0.0f},
-                    .initial_rotation_degrees = -90.0f,
-                    .distance_from_origin = 1.0f
-            }
-        });
-    
+            planetary_system::celestial_body_data_loader::parseCelestialBodyConfig(RESOURCES_DIR"earth-config.json")
+    });
+
     while(!glfwWindowShouldClose(window)) {
         processKeyboardInput(window);
 
